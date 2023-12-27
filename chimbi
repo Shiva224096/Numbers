@@ -1,0 +1,43 @@
+Sub FindNumbers()
+   Dim lowerBound As Integer
+   Dim upperBound As Integer
+   Dim i As Integer
+   Dim currentNum As Integer
+   Dim sumDigits As Integer
+   lowerBound = 100 ' Define the lower bound of the range
+   upperBound = 3000 ' Define the upper bound of the range
+   
+   Cells(1, 1).Value = "Add upto 3"
+   Cells(1, 2).Value = "Add upto 6"
+   Cells(1, 3).Value = "Add upto 9"
+   cl1 = 2
+   cl2 = 2
+   cl3 = 2
+   For i = lowerBound To upperBound
+       currentNum = i
+       sumDigits = 0
+       ' Calculate the sum of digits
+       Do While currentNum > 0
+           sumDigits = sumDigits + (currentNum Mod 10)
+           currentNum = currentNum \ 10
+       Loop
+       ' Check if the sum of digits is 3, 6, or 9
+       If sumDigits = 3 Then
+            Cells(cl1, 1).Value = i
+            cl1 = cl1 + 1
+            
+       End If
+       
+       If sumDigits = 6 Then
+            Cells(cl2, 2).Value = i
+            cl2 = cl2 + 1
+            
+       End If
+       
+       If sumDigits = 9 Then
+            Cells(cl3, 3).Value = i
+            cl3 = cl3 + 1
+           
+       End If
+   Next i
+End Sub
