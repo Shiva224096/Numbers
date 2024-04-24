@@ -1,0 +1,33 @@
+import os
+import pdfkit
+import extract_msg
+
+def convert_msg_to_pdf(msg_file, output_folder):
+    msg = extract_msg.Message(msg_file)
+    subject = msg.subject
+    body = msg.body
+    attachments = msg.attachments
+
+    pdf_filename = os.path.join(output_folder, f"{subject}.pdf")
+    with open(pdf_filename, "w+b") as f:
+        f.write(body.encode('utf-8'))
+        for attachment in attachments:
+            attachment.save(customPath=output_folder)
+
+    pdfkit.from_file(pdf_filename, f"{output_folder}/{subject}.pdf")
+    print(f"PDF saved: {pdf_filename}")
+
+def convert_msg_files_to_pdf(input_folder, output_folder):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    for root, dirs, files in os.walk(input_folder):
+        for file in files:
+            if file.endswith('.msg'):
+                file_path = os.path.join(root, file)
+                convert_msg_to_pdf(file_path, output_folder)
+
+if __name__ == "__main__":
+    input_folder = "input_folder"  # Specify the folder containing .msg files
+    output_folder = "output_folder"  # Specify the folder where you want to save the PDFs and attachments
+    convert_msg_files_to_pdf(input_folder, output_folder)
