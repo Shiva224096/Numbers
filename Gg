@@ -1,20 +1,22 @@
-import extract_msg
-from reportlab.pdfgen import canvas
+# Install the library
+pip install PyMuPDF
 
-# Function to convert .msg to PDF
+import fitz  # PyMuPDF
+
 def convert_msg_to_pdf(msg_file_path, pdf_file_path):
-    # Extract content from .msg file
+    doc = fitz.open()  # Create a new PDF document
     msg = extract_msg.Message(msg_file_path)
     subject = msg.subject
     body = msg.body
 
-    # Create a PDF file with the extracted content
-    c = canvas.Canvas(pdf_file_path)
-    c.drawString(100, 750, subject)
-    text_object = c.beginText(40, 720)
-    text_object.textLines(body)
-    c.drawText(text_object)
-    c.save()
+    # Add a new page to the PDF
+    page = doc.new_page(width=600, height=800)
+    page.insert_text((100, 750), subject, fontsize=12)
+    page.insert_text((40, 720), body, fontsize=10)
+
+    # Save the PDF
+    doc.save(pdf_file_path)
+    doc.close()
 
 # Example usage
 convert_msg_to_pdf('path/to/your/file.msg', 'output.pdf')
