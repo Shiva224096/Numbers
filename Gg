@@ -1,22 +1,10 @@
-# Install the library
-pip install PyMuPDF
+import win32com.client as win32
 
-import fitz  # PyMuPDF
+URL = r'C:\path_to_your_html_file.html'
+message = win32.gencache.EnsureDispatch('CDO.Message')
+message.CreateMHTMLBody(URL, 0)  # 0 - suppress none, download all images and other resources
 
-def convert_msg_to_pdf(msg_file_path, pdf_file_path):
-    doc = fitz.open()  # Create a new PDF document
-    msg = extract_msg.Message(msg_file_path)
-    subject = msg.subject
-    body = msg.body
+stream = win32.gencache.EnsureDispatch(message.GetStream())
+stream.SaveToFile(r'C:\path_to_save_mht_file.mht', 2)  # 2 for overwriting existing file
 
-    # Add a new page to the PDF
-    page = doc.new_page(width=600, height=800)
-    page.insert_text((100, 750), subject, fontsize=12)
-    page.insert_text((40, 720), body, fontsize=10)
-
-    # Save the PDF
-    doc.save(pdf_file_path)
-    doc.close()
-
-# Example usage
-convert_msg_to_pdf('path/to/your/file.msg', 'output.pdf')
+stream.Close()
