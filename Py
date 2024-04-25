@@ -1,0 +1,9 @@
+from msg2pdf import Converter
+
+def convert_msg_to_pdf(input_file, output_file):
+    converter = Converter()
+    converter.convert(input_file, output_file)
+
+input_file = "input.msg"
+output_file = "output.pdf"
+convert_msg_to_pdf(input_file, output_file)
