@@ -1,0 +1,20 @@
+import extract_msg
+from reportlab.pdfgen import canvas
+
+# Function to convert .msg to PDF
+def convert_msg_to_pdf(msg_file_path, pdf_file_path):
+    # Extract content from .msg file
+    msg = extract_msg.Message(msg_file_path)
+    subject = msg.subject
+    body = msg.body
+
+    # Create a PDF file with the extracted content
+    c = canvas.Canvas(pdf_file_path)
+    c.drawString(100, 750, subject)
+    text_object = c.beginText(40, 720)
+    text_object.textLines(body)
+    c.drawText(text_object)
+    c.save()
+
+# Example usage
+convert_msg_to_pdf('path/to/your/file.msg', 'output.pdf')
